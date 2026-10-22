@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Local datasets and private data
+data/
+datasets/
+*.pcap
+*.pcapng
+
+# Generated artifacts and large binaries
+outputs/
+*.joblib
+*.pkl
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

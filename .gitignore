@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Local datasets and private data (never commit large CSV/PCAP files)
+data/
+datasets/
+*.csv
+*.pcap
+*.pcapng
+
+# Generated artifacts and large binaries
+outputs/
+*.joblib
+*.pkl
+
+# Node / Web preview build artifacts
+node_modules/
+dist/
+.playwright-cli/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

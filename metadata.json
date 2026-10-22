@@ -1,0 +1,6 @@
+{
+  "name": "ML-Based Network Intrusion Detection System (CIC-IDS2017)",
+  "description": "Complete academic cybersecurity & machine learning project for the IBM SkillsBuild Cyber Security Bootcamp 2026 conducted by BharatCares (CSRBOX Group). Includes runnable Python pipeline, EDA plots, leak-free scikit-learn models, flow predictor, and 30-section DOCX report.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

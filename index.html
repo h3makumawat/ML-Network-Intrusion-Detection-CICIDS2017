@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var currentFetch = typeof window.fetch === "function" ? window.fetch.bind(window) : undefined;
+          var patchTarget = function (target) {
+            if (!target) return;
+            var desc = Object.getOwnPropertyDescriptor(target, "fetch");
+            if (!desc || (desc.configurable !== false && !desc.writable && !desc.set)) {
+              Object.defineProperty(target, "fetch", {
+                configurable: true,
+                enumerable: true,
+                get: function () {
+                  return currentFetch;
+                },
+                set: function (fn) {
+                  if (typeof fn === "function") {
+                    currentFetch = fn;
+                  }
+                }
+              });
+            }
+          };
+          if (typeof Window !== "undefined" && Window.prototype) {
+            patchTarget(Window.prototype);
+          }
+          patchTarget(window);
+        } catch (_err) {
+          // Ignore if environment locks window.fetch as non-configurable
+        }
+
+        window.addEventListener(
+          "error",
+          function (event) {
+            var msg = String((event && event.message) || "");
+            var file = String((event && event.filename) || "");
+            if (
+              file.indexOf("chrome-extension://") === 0 ||
+              msg.indexOf("Cannot set property fetch of #<Window>") !== -1
+            ) {
+              event.stopImmediatePropagation();
+              event.preventDefault();
+            }
+          },
+          true
+        );
+      })();
+    </script>
+    <title>ML-Based Network Intrusion Detection System (CIC-IDS2017)</title>
+    <meta name="description" content="Complete academic cybersecurity & machine learning project for the IBM SkillsBuild Cyber Security Bootcamp 2026 conducted by BharatCares (CSRBOX Group). Includes runnable Python pipeline, EDA plots, leak-free scikit-learn models, flow predictor, and 30-section DOCX report." />
+    <meta property="og:title" content="ML-Based Network Intrusion Detection System (CIC-IDS2017)" />
+    <meta property="og:description" content="Complete academic cybersecurity & machine learning project for the IBM SkillsBuild Cyber Security Bootcamp 2026 conducted by BharatCares (CSRBOX Group)." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
