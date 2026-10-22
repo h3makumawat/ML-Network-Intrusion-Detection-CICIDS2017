@@ -1,0 +1,293 @@
+{
+  "original_row_count": 800,
+  "sampled_row_count": 800,
+  "rows_retained": 800,
+  "rows_dropped_due_to_missing_label": 0,
+  "rows_dropped_invalid_label": 0,
+  "retention_rate_percent": 100.0,
+  "initial_column_count": 7,
+  "detected_label_column": "Label",
+  "identifier_columns_excluded": [],
+  "missing_values_handled": 0,
+  "infinite_values_handled": 0,
+  "class_counts": {
+    "BENIGN": 520,
+    "MALICIOUS": 280
+  },
+  "binary_class_distribution": {
+    "BENIGN": 520,
+    "MALICIOUS": 280,
+    "benign_percent": 65.0,
+    "malicious_percent": 35.0
+  },
+  "attack_category_distribution": {
+    "BENIGN": 520,
+    "SYNTHETIC_ATTACK": 280
+  },
+  "source_row_count_after_file_read": 800,
+  "features_used": 6,
+  "features_used_count": 6,
+  "feature_columns": [
+    "Flow Duration",
+    "Total Fwd Packets",
+    "Total Length of Fwd Packets",
+    "Flow Packets/s",
+    "Active Mean",
+    "Idle Mean"
+  ],
+  "feature_names": [
+    "Flow Duration",
+    "Total Fwd Packets",
+    "Total Length of Fwd Packets",
+    "Flow Packets/s",
+    "Active Mean",
+    "Idle Mean"
+  ],
+  "dropped_all_missing_columns": [],
+  "dropped_duplicate_columns": [],
+  "dropped_constant_columns": [],
+  "duplicate_columns_removed": [],
+  "constant_columns_removed": [],
+  "non_numeric_columns_removed": [],
+  "student_name": "Hemlata Kumawat",
+  "branch": "BCA",
+  "dataset_type": "synthetic_demo",
+  "data_source_mode": "SYNTHETIC_DEMO_DATA",
+  "is_synthetic_demo": true,
+  "synthetic_disclaimer": "DEMO MODE: Synthetic records were used solely to verify the code pipeline. These metrics do NOT represent real-world CIC-IDS2017 detection performance.",
+  "positive_class_definition": {
+    "label_int": 1,
+    "label_name": "MALICIOUS",
+    "explanation": "MALICIOUS (1) is the positive class so Recall measures attack detection rate and Precision measures alert fidelity."
+  },
+  "why_accuracy_is_insufficient": "Because benign network flows heavily outnumber attacks in real traffic, a classifier can score high Accuracy while missing attacks (False Negatives). Precision, Recall, F1-Score, FP/FN counts, and ROC-AUC are therefore essential.",
+  "false_positive_vs_false_negative_analysis": {
+    "false_positive_consequences": "False Positives flag normal BENIGN traffic as MALICIOUS, causing unnecessary alerts and analyst fatigue.",
+    "false_negative_consequences": "False Negatives miss real MALICIOUS attacks by labeling them BENIGN, allowing intrusions to proceed undetected."
+  },
+  "train_rows": 640,
+  "test_rows": 160,
+  "train_row_count": 640,
+  "test_row_count": 160,
+  "feature_count": 6,
+  "selected_model": "Random Forest",
+  "selection_metric": "f1_malicious",
+  "selection_reasoning": "Selected 'Random Forest' because it achieved the highest F1-Score (0.9735) and Recall (0.9821) for the MALICIOUS class on the held-out test set.",
+  "model_metrics": {
+    "Decision Tree": {
+      "accuracy": 0.9625,
+      "precision_malicious": 0.9464,
+      "recall_malicious": 0.9464,
+      "f1_malicious": 0.9464,
+      "false_positives": 3,
+      "false_negatives": 3,
+      "roc_auc": 0.9588,
+      "training_time_seconds": 0.007,
+      "precision": 0.9464,
+      "recall": 0.9464,
+      "f1_score": 0.9464,
+      "false_positive_count": 3,
+      "false_negative_count": 3,
+      "false_positive_rate": 0.0288,
+      "false_negative_rate": 0.0536,
+      "confusion_matrix": {
+        "true_negatives_benign": 101,
+        "false_positives_false_alarm": 3,
+        "false_negatives_missed_attack": 3,
+        "true_positives_detected_attack": 53,
+        "matrix_2x2": [
+          [
+            101,
+            3
+          ],
+          [
+            3,
+            53
+          ]
+        ]
+      },
+      "classification_report_text": "              precision    recall  f1-score   support\n\n      BENIGN       0.97      0.97      0.97       104\n   MALICIOUS       0.95      0.95      0.95        56\n\n    accuracy                           0.96       160\n   macro avg       0.96      0.96      0.96       160\nweighted avg       0.96      0.96      0.96       160\n",
+      "model_name": "Decision Tree"
+    },
+    "Random Forest": {
+      "accuracy": 0.9812,
+      "precision_malicious": 0.9649,
+      "recall_malicious": 0.9821,
+      "f1_malicious": 0.9735,
+      "false_positives": 2,
+      "false_negatives": 1,
+      "roc_auc": 0.9981,
+      "training_time_seconds": 0.426,
+      "precision": 0.9649,
+      "recall": 0.9821,
+      "f1_score": 0.9735,
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "false_positive_rate": 0.0192,
+      "false_negative_rate": 0.0179,
+      "confusion_matrix": {
+        "true_negatives_benign": 102,
+        "false_positives_false_alarm": 2,
+        "false_negatives_missed_attack": 1,
+        "true_positives_detected_attack": 55,
+        "matrix_2x2": [
+          [
+            102,
+            2
+          ],
+          [
+            1,
+            55
+          ]
+        ]
+      },
+      "classification_report_text": "              precision    recall  f1-score   support\n\n      BENIGN       0.99      0.98      0.99       104\n   MALICIOUS       0.96      0.98      0.97        56\n\n    accuracy                           0.98       160\n   macro avg       0.98      0.98      0.98       160\nweighted avg       0.98      0.98      0.98       160\n",
+      "model_name": "Random Forest"
+    }
+  },
+  "models": {
+    "Decision Tree": {
+      "accuracy": 0.9625,
+      "precision_malicious": 0.9464,
+      "recall_malicious": 0.9464,
+      "f1_malicious": 0.9464,
+      "false_positives": 3,
+      "false_negatives": 3,
+      "roc_auc": 0.9588,
+      "training_time_seconds": 0.007,
+      "precision": 0.9464,
+      "recall": 0.9464,
+      "f1_score": 0.9464,
+      "false_positive_count": 3,
+      "false_negative_count": 3,
+      "false_positive_rate": 0.0288,
+      "false_negative_rate": 0.0536,
+      "confusion_matrix": {
+        "true_negatives_benign": 101,
+        "false_positives_false_alarm": 3,
+        "false_negatives_missed_attack": 3,
+        "true_positives_detected_attack": 53,
+        "matrix_2x2": [
+          [
+            101,
+            3
+          ],
+          [
+            3,
+            53
+          ]
+        ]
+      },
+      "classification_report_text": "              precision    recall  f1-score   support\n\n      BENIGN       0.97      0.97      0.97       104\n   MALICIOUS       0.95      0.95      0.95        56\n\n    accuracy                           0.96       160\n   macro avg       0.96      0.96      0.96       160\nweighted avg       0.96      0.96      0.96       160\n",
+      "model_name": "Decision Tree"
+    },
+    "Random Forest": {
+      "accuracy": 0.9812,
+      "precision_malicious": 0.9649,
+      "recall_malicious": 0.9821,
+      "f1_malicious": 0.9735,
+      "false_positives": 2,
+      "false_negatives": 1,
+      "roc_auc": 0.9981,
+      "training_time_seconds": 0.426,
+      "precision": 0.9649,
+      "recall": 0.9821,
+      "f1_score": 0.9735,
+      "false_positive_count": 2,
+      "false_negative_count": 1,
+      "false_positive_rate": 0.0192,
+      "false_negative_rate": 0.0179,
+      "confusion_matrix": {
+        "true_negatives_benign": 102,
+        "false_positives_false_alarm": 2,
+        "false_negatives_missed_attack": 1,
+        "true_positives_detected_attack": 55,
+        "matrix_2x2": [
+          [
+            102,
+            2
+          ],
+          [
+            1,
+            55
+          ]
+        ]
+      },
+      "classification_report_text": "              precision    recall  f1-score   support\n\n      BENIGN       0.99      0.98      0.99       104\n   MALICIOUS       0.96      0.98      0.97        56\n\n    accuracy                           0.98       160\n   macro avg       0.98      0.98      0.98       160\nweighted avg       0.98      0.98      0.98       160\n",
+      "model_name": "Random Forest"
+    }
+  },
+  "top_feature_importances": [
+    {
+      "feature": "Total Fwd Packets",
+      "importance": 0.653
+    },
+    {
+      "feature": "Flow Packets/s",
+      "importance": 0.1239
+    },
+    {
+      "feature": "Flow Duration",
+      "importance": 0.1134
+    },
+    {
+      "feature": "Total Length of Fwd Packets",
+      "importance": 0.0865
+    },
+    {
+      "feature": "Active Mean",
+      "importance": 0.0134
+    },
+    {
+      "feature": "Idle Mean",
+      "importance": 0.0098
+    }
+  ],
+  "cleaning_summary": {
+    "original_row_count": 800,
+    "sampled_row_count": 800,
+    "rows_retained": 800,
+    "rows_dropped_invalid_label": 0,
+    "retention_rate_percent": 100.0,
+    "initial_column_count": 7,
+    "features_used_count": 6,
+    "feature_names": [
+      "Flow Duration",
+      "Total Fwd Packets",
+      "Total Length of Fwd Packets",
+      "Flow Packets/s",
+      "Active Mean",
+      "Idle Mean"
+    ],
+    "detected_label_column": "Label",
+    "duplicate_columns_removed": [],
+    "identifier_columns_excluded": [],
+    "constant_columns_removed": [],
+    "non_numeric_columns_removed": [],
+    "missing_values_handled": 0,
+    "infinite_values_handled": 0,
+    "binary_class_distribution": {
+      "BENIGN": 520,
+      "MALICIOUS": 280,
+      "benign_percent": 65.0,
+      "malicious_percent": 35.0
+    },
+    "attack_category_distribution": {
+      "BENIGN": 520,
+      "SYNTHETIC_ATTACK": 280
+    }
+  },
+  "selected_model_confusion_matrix": [
+    [
+      102,
+      2
+    ],
+    [
+      1,
+      55
+    ]
+  ],
+  "selected_model_classification_report": "              precision    recall  f1-score   support\n\n      BENIGN       0.99      0.98      0.99       104\n   MALICIOUS       0.96      0.98      0.97        56\n\n    accuracy                           0.98       160\n   macro avg       0.98      0.98      0.98       160\nweighted avg       0.98      0.98      0.98       160\n",
+  "random_state": 42,
+  "warning": "Metrics describe this particular dataset split and do not guarantee real-world detection performance."
+}

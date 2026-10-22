@@ -12,10 +12,9 @@ datasets/
 *.pcap
 *.pcapng
 
-# Generated artifacts and large binaries
-outputs/
-*.joblib
-*.pkl
+# Keep precomputed verification artifacts in outputs/ so preview works immediately after container wake
+!outputs/
+!outputs/**
 
 # Node / Web preview build artifacts
 node_modules/

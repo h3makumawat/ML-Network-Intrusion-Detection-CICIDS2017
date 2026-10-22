@@ -1,0 +1,18 @@
+{
+  "status": "success",
+  "student": "Hemlata Kumawat",
+  "branch": "BCA",
+  "dataset_type": "synthetic_demo",
+  "selected_model": "Random Forest",
+  "output_files": [
+    "model.joblib",
+    "feature_schema.json",
+    "evaluation_metrics.json",
+    "classification_report.txt",
+    "confusion_matrix.png",
+    "class_distribution.png",
+    "feature_correlation.png",
+    "model_comparison.png",
+    "system_architecture.png"
+  ]
+}

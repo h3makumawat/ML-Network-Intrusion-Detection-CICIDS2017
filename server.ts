@@ -9,9 +9,88 @@ const execFileAsync = promisify(execFile);
 const ROOT_DIR = process.cwd();
 const OUTPUTS_DIR = path.join(ROOT_DIR, 'outputs');
 const DATA_DIR = path.join(ROOT_DIR, 'data');
-const PYTHON_BIN = fs.existsSync(path.join(ROOT_DIR, '.venv', 'bin', 'python'))
-  ? path.join(ROOT_DIR, '.venv', 'bin', 'python')
-  : 'python3';
+const VENV_PYTHON = path.join(ROOT_DIR, '.venv', 'bin', 'python');
+const VENV_PIP = path.join(ROOT_DIR, '.venv', 'bin', 'pip');
+
+let pythonEnvPromise: Promise<string> | null = null;
+
+async function ensurePythonEnvironment(): Promise<string> {
+  if (fs.existsSync(VENV_PYTHON)) {
+    try {
+      await execFileAsync(VENV_PYTHON, ['-c', 'import pandas, sklearn, matplotlib, seaborn, joblib, docx'], {
+        cwd: ROOT_DIR,
+        timeout: 15000,
+      });
+      return VENV_PYTHON;
+    } catch {
+      // Re-run pip install if packages are incomplete
+    }
+  }
+
+  if (!pythonEnvPromise) {
+    pythonEnvPromise = (async () => {
+      try {
+        console.log('Provisioning Python .venv and installing requirements.txt...');
+        if (!fs.existsSync(VENV_PIP)) {
+          fs.rmSync(path.join(ROOT_DIR, '.venv'), { recursive: true, force: true });
+          await execFileAsync('python3', ['-m', 'venv', '--without-pip', path.join(ROOT_DIR, '.venv')], {
+            cwd: ROOT_DIR,
+            timeout: 60000,
+          });
+          await execFileAsync(
+            'bash',
+            ['-c', 'curl -sS https://bootstrap.pypa.io/get-pip.py | .venv/bin/python'],
+            {
+              cwd: ROOT_DIR,
+              timeout: 90000,
+            }
+          );
+        }
+        await execFileAsync(
+          VENV_PIP,
+          ['install', '--disable-pip-version-check', '-q', '-r', path.join(ROOT_DIR, 'requirements.txt')],
+          {
+            cwd: ROOT_DIR,
+            timeout: 120000,
+          }
+        );
+        console.log('Python .venv ready.');
+        return VENV_PYTHON;
+      } finally {
+        pythonEnvPromise = null;
+      }
+    })();
+  }
+
+  return pythonEnvPromise;
+}
+
+async function ensureOutputsInitialized(): Promise<void> {
+  const metricsPath = path.join(OUTPUTS_DIR, 'evaluation_metrics.json');
+  if (fs.existsSync(metricsPath)) {
+    return;
+  }
+  try {
+    const pyBin = await ensurePythonEnvironment();
+    await execFileAsync(
+      pyBin,
+      [
+        path.join(ROOT_DIR, 'HemlataKumawat_NetworkIntrusionDetection.py'),
+        '--demo',
+        '--output-dir',
+        OUTPUTS_DIR,
+        '--generate-report',
+      ],
+      {
+        cwd: ROOT_DIR,
+        timeout: 90000,
+        maxBuffer: 10 * 1024 * 1024,
+      }
+    );
+  } catch (err) {
+    console.error('Background output initialization failed:', err);
+  }
+}
 
 const MANDATORY_FILES: Array<{
   filename: string;
@@ -186,8 +265,14 @@ async function startServer() {
   const app = express();
   app.use(express.json({ limit: '50mb' }));
 
+  // Trigger background output verification on boot if outputs/ is missing
+  void ensureOutputsInitialized();
+
   // 1. Get complete project state, metrics, schema, deliverables, and artifacts
-  app.get('/api/status', (_req, res) => {
+  app.get('/api/status', async (_req, res) => {
+    if (!fs.existsSync(path.join(OUTPUTS_DIR, 'evaluation_metrics.json'))) {
+      await ensureOutputsInitialized();
+    }
     res.json(buildProjectState());
   });
 
@@ -287,6 +372,7 @@ async function startServer() {
   // 6. Execute Python ML Pipeline (Demo mode or Uploaded CSV) & regenerate DOCX report
   app.post('/api/run-pipeline', async (req, res) => {
     try {
+      const pyBin = await ensurePythonEnvironment();
       const {
         sampleSize = 800,
         seed = 42,
@@ -327,9 +413,9 @@ async function startServer() {
         cliArgs.push('--demo');
       }
 
-      const { stdout, stderr } = await execFileAsync(PYTHON_BIN, cliArgs, {
+      const { stdout, stderr } = await execFileAsync(pyBin, cliArgs, {
         cwd: ROOT_DIR,
-        timeout: 60000,
+        timeout: 90000,
         maxBuffer: 10 * 1024 * 1024,
       });
 
@@ -350,6 +436,8 @@ async function startServer() {
   // 7. Run Real Model Inference on a Single Flow Record or CSV Batch
   app.post('/api/predict-flow', async (req, res) => {
     try {
+      await ensureOutputsInitialized();
+      const pyBin = await ensurePythonEnvironment();
       const { flowRecord, csvContent } = req.body || {};
 
       const inlineScript = `
@@ -379,7 +467,7 @@ print(json.dumps(res))
 `;
 
       const child = execFile(
-        PYTHON_BIN,
+        pyBin,
         ['-c', inlineScript],
         { cwd: ROOT_DIR, timeout: 25000, maxBuffer: 5 * 1024 * 1024 },
         (error, stdout, stderr) => {

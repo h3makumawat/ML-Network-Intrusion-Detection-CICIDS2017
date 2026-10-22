@@ -1,0 +1,65 @@
+{
+  "project": "ML-Based Network Intrusion Detection System",
+  "student": "Hemlata Kumawat",
+  "branch": "BCA",
+  "feature_columns": [
+    "Flow Duration",
+    "Total Fwd Packets",
+    "Total Length of Fwd Packets",
+    "Flow Packets/s",
+    "Active Mean",
+    "Idle Mean"
+  ],
+  "required_features": [
+    "Flow Duration",
+    "Total Fwd Packets",
+    "Total Length of Fwd Packets",
+    "Flow Packets/s",
+    "Active Mean",
+    "Idle Mean"
+  ],
+  "feature_count": 6,
+  "training_feature_medians": {
+    "Flow Duration": 3.0453,
+    "Total Fwd Packets": 21.0,
+    "Total Length of Fwd Packets": 1600.0475,
+    "Flow Packets/s": 9.2464,
+    "Active Mean": 12.0835,
+    "Idle Mean": 24.9087
+  },
+  "top_feature_importances": [
+    {
+      "feature": "Total Fwd Packets",
+      "importance": 0.653
+    },
+    {
+      "feature": "Flow Packets/s",
+      "importance": 0.1239
+    },
+    {
+      "feature": "Flow Duration",
+      "importance": 0.1134
+    },
+    {
+      "feature": "Total Length of Fwd Packets",
+      "importance": 0.0865
+    },
+    {
+      "feature": "Active Mean",
+      "importance": 0.0134
+    },
+    {
+      "feature": "Idle Mean",
+      "importance": 0.0098
+    }
+  ],
+  "label_mapping": {
+    "BENIGN": 0,
+    "MALICIOUS": 1
+  },
+  "selected_model": "Random Forest",
+  "selected_model_name": "Random Forest",
+  "data_source_mode": "SYNTHETIC_DEMO_DATA",
+  "random_state": 42,
+  "note": "Dataset-based model; not a live traffic sensor or prevention system."
+}
